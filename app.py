@@ -230,16 +230,20 @@ def get_student_preparation(student_id):
 
 def save_student_preparation(student_id, data):
     """Persist preparation progress for the logged-in student."""
+    def parse_progress(value):
+        try:
+            return max(0, min(100, int(value or 0)))
+        except (TypeError, ValueError):
+            return 0
+
     values = {
-        'aptitude': int((data.get('aptitude') or 0)),
-        'programming': int((data.get('programming') or 0)),
-        'technical': int((data.get('technical') or 0)),
-        'communication': int((data.get('communication') or 0)),
-        'interview': int((data.get('interview') or 0)),
-        'company_specific': int((data.get('company_specific') or 0)),
+        'aptitude': parse_progress(data.get('aptitude')),
+        'programming': parse_progress(data.get('programming')),
+        'technical': parse_progress(data.get('technical')),
+        'communication': parse_progress(data.get('communication')),
+        'interview': parse_progress(data.get('interview')),
+        'company_specific': parse_progress(data.get('company_specific')),
     }
-    for key in values:
-        values[key] = max(0, min(100, values[key]))
 
     with sqlite3.connect(DB_NAME, timeout=10) as connection:
         connection.execute(
@@ -300,7 +304,7 @@ def get_career_guidance(student):
             'entry_roles': roles,
         }
 
-    if any(token in branch_key for token in ['computer science', 'cse', 'information technology', 'it']):
+    if any(contains_keyword(branch_key, token) for token in ['computer science', 'cse', 'information technology', 'it']):
         recommendations = [
             make_path(
                 'Software Developer',
@@ -324,7 +328,7 @@ def get_career_guidance(student):
                 ['Frontend Developer Intern', 'Full Stack Intern', 'Product Engineer']
             ),
         ]
-    elif any(token in branch_key for token in ['cyber', 'security']):
+    elif any(contains_keyword(branch_key, token) for token in ['cyber', 'security']):
         recommendations = [
             make_path(
                 'Cyber Security Analyst',
@@ -348,7 +352,7 @@ def get_career_guidance(student):
                 ['Security Engineer Intern', 'Junior Security Engineer', 'Infrastructure Security Trainee']
             ),
         ]
-    elif any(token in branch_key for token in ['ece', 'electronics', 'electronic']):
+    elif any(contains_keyword(branch_key, token) for token in ['ece', 'electronics', 'electronic']):
         recommendations = [
             make_path(
                 'Embedded Engineer',
@@ -372,7 +376,7 @@ def get_career_guidance(student):
                 ['IoT Intern', 'Embedded Systems Trainee', 'Hardware Support Engineer']
             ),
         ]
-    elif any(token in branch_key for token in ['eee', 'electrical']):
+    elif any(contains_keyword(branch_key, token) for token in ['eee', 'electrical']):
         recommendations = [
             make_path(
                 'Electrical Engineer',
@@ -389,7 +393,7 @@ def get_career_guidance(student):
                 ['Power Engineer Intern', 'Operations Trainee', 'Maintenance Engineer']
             ),
         ]
-    elif 'mechanical' in branch_key:
+    elif contains_keyword(branch_key, 'mechanical'):
         recommendations = [
             make_path(
                 'Design Engineer',
@@ -406,7 +410,7 @@ def get_career_guidance(student):
                 ['Manufacturing Intern', 'Production Trainee', 'Process Engineer']
             ),
         ]
-    elif 'civil' in branch_key:
+    elif contains_keyword(branch_key, 'civil'):
         recommendations = [
             make_path(
                 'Site Engineer',
@@ -565,6 +569,11 @@ def normalize_text(value):
     return value
 
 
+def contains_keyword(text, keyword):
+    """Match a word or phrase without treating short tokens as substrings."""
+    return re.search(rf"(?<![a-z0-9]){re.escape(keyword)}(?![a-z0-9])", text) is not None
+
+
 BRANCH_KEYWORDS = {
     "computer science": [
         "software developer", "software engineer", "software", "python", "java",
@@ -601,17 +610,17 @@ def get_branch_keywords(branch_name):
     if not normalized:
         return []
 
-    if any(token in normalized for token in ["computer science", "cse", "computer science and engineering", "information technology", "it"]):
+    if any(contains_keyword(normalized, token) for token in ["computer science", "cse", "computer science and engineering", "information technology", "it"]):
         return BRANCH_KEYWORDS["computer science"]
-    if any(token in normalized for token in ["cyber", "security"]):
+    if any(contains_keyword(normalized, token) for token in ["cyber", "security"]):
         return BRANCH_KEYWORDS["cyber security"]
-    if any(token in normalized for token in ["ece", "electronics", "electronic"]):
+    if any(contains_keyword(normalized, token) for token in ["ece", "electronics", "electronic"]):
         return BRANCH_KEYWORDS["electronics"]
-    if any(token in normalized for token in ["eee", "electrical", "electrical and electronics"]):
+    if any(contains_keyword(normalized, token) for token in ["eee", "electrical", "electrical and electronics"]):
         return BRANCH_KEYWORDS["electrical"]
-    if "mechanical" in normalized:
+    if contains_keyword(normalized, "mechanical"):
         return BRANCH_KEYWORDS["mechanical"]
-    if "civil" in normalized:
+    if contains_keyword(normalized, "civil"):
         return BRANCH_KEYWORDS["civil"]
     return []
 
@@ -632,7 +641,7 @@ def placement_matches_branch(placement_row, branch_name):
         placement_row.get("job_description") or "",
         placement_row.get("description") or ""
     ]))
-    return any(keyword in text for keyword in keywords)
+    return any(contains_keyword(text, keyword) for keyword in keywords)
 
 
 def get_branch_relevant_placements(student_id):
