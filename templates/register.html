@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Student registration portal for the college placement management system."
+    />
+    <title>Placement Portal | Student Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <main class="login-layout" aria-label="Student registration screen">
+        <section class="login-panel" aria-labelledby="register-title">
+          <header class="brand" aria-label="Placement portal brand">
+            <div class="brand-mark" aria-hidden="true">SP</div>
+            <div class="brand-copy">
+              <span class="eyebrow">Campus Connect</span>
+              <h1>Placement Portal</h1>
+            </div>
+          </header>
+
+          <div class="login-header register-header">
+            <p class="overline">Create your profile</p>
+            <h2 id="register-title">Student Registration</h2>
+            <p class="subtitle">Start your placement journey with campus opportunities, recruiter events, and career support.</p>
+          </div>
+
+          <form class="login-form register-form" action="/register" method="post">
+            <div class="field-group">
+              <label for="full-name">Full Name</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">👤</span>
+                <input
+                  id="full-name"
+                  name="full_name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  autocomplete="name"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="email">College Email</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">✉</span>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="name@college.edu"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="password">Password</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">🔒</span>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Create a strong password"
+                  autocomplete="new-password"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="phone">Phone Number</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">📱</span>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="Enter your phone number"
+                  autocomplete="tel"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field-group">
+                <label for="branch">Branch</label>
+                <div class="input-wrap select-wrap">
+                  <span class="input-icon" aria-hidden="true">🎓</span>
+                  <select id="branch" name="branch" required>
+                    <option value="">Select your branch</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Mechanical">Mechanical</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Electrical">Electrical</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="graduation-year">Graduation Year</label>
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">📅</span>
+                  <input
+                    id="graduation-year"
+                    name="graduation_year"
+                    type="number"
+                    min="2024"
+                    max="2035"
+                    placeholder="2026"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="skills">Skills</label>
+              <div class="input-wrap textarea-wrap">
+                <span class="input-icon" aria-hidden="true">✍</span>
+                <textarea
+                  id="skills"
+                  name="skills"
+                  rows="4"
+                  placeholder="Example: Python, SQL, Communication, Teamwork"
+                ></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="login-button">Create Account</button>
+          </form>
+
+          <p class="signup-text">
+            Already have an account?
+            <a href="/login" class="link-text">Login</a>
+          </p>
+        </section>
+
+        <aside class="visual-panel" aria-label="Career placement opportunities overview">
+          <div class="visual-card">
+            <div class="status-pill">
+              <span class="status-dot" aria-hidden="true"></span>
+              Placement drive active
+            </div>
+
+            <h3>Build your future with top employers</h3>
+
+            <div class="stats-grid" aria-label="Placement highlights">
+              <div class="stat-box">
+                <strong>240+</strong>
+                <span>Companies</span>
+              </div>
+              <div class="stat-box">
+                <strong>8.4L</strong>
+                <span>Avg. package</span>
+              </div>
+              <div class="stat-box">
+                <strong>92%</strong>
+                <span>Placement rate</span>
+              </div>
+            </div>
+
+            <div class="opportunities" aria-label="Featured internship opportunities">
+              <article class="job-item">
+                <div class="company-badge company-one" aria-hidden="true">A</div>
+                <div class="job-copy">
+                  <h4>Analytics Intern</h4>
+                  <p>Accenture • Bengaluru</p>
+                </div>
+              </article>
+
+              <article class="job-item">
+                <div class="company-badge company-two" aria-hidden="true">T</div>
+                <div class="job-copy">
+                  <h4>Software Engineer</h4>
+                  <p>TechNova • Hyderabad</p>
+                </div>
+              </article>
+
+              <article class="job-item">
+                <div class="company-badge company-three" aria-hidden="true">G</div>
+                <div class="job-copy">
+                  <h4>Business Analyst</h4>
+                  <p>GlobalEdge • Pune</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="floating-badge">Career support dashboard</div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

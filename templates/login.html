@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Student placement management login portal for college career services."
+    />
+    <title>Placement Portal | Student Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <main class="login-layout" aria-label="Student placement login screen">
+        <section class="login-panel" aria-labelledby="login-title">
+          <header class="brand" aria-label="Placement portal brand">
+            <div class="brand-mark" aria-hidden="true">SP</div>
+            <div class="brand-copy">
+              <span class="eyebrow">Campus Connect</span>
+              <h1>Placement Portal</h1>
+            </div>
+          </header>
+
+          <div class="login-header">
+            <p class="overline">Welcome back</p>
+            <h2 id="login-title">Student Login</h2>
+          </div>
+
+          <form class="login-form" action="/login" method="post">
+            <div class="field-group">
+              <label for="email">Email address</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">✉</span>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="name@college.edu"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="password">Password</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">🔒</span>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label class="checkbox-wrap" for="remember-me">
+                <input id="remember-me" name="remember-me" type="checkbox" />
+                <span>Remember me</span>
+              </label>
+
+              <a href="#" class="link-text">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-button">Login</button>
+          </form>
+          {% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+
+          <p class="signup-text">
+            Need an account?
+            <a href="/register" class="link-text">Create account</a>
+          </p>
+        </section>
+
+        <aside class="visual-panel" aria-label="Career placement opportunities overview">
+          <div class="visual-card">
+            <div class="status-pill">
+              <span class="status-dot" aria-hidden="true"></span>
+              Placement drive active
+            </div>
+
+            <h3>Build your future with top employers</h3>
+
+            <div class="stats-grid" aria-label="Placement highlights">
+              <div class="stat-box">
+                <strong>240+</strong>
+                <span>Companies</span>
+              </div>
+              <div class="stat-box">
+                <strong>8.4L</strong>
+                <span>Avg. package</span>
+              </div>
+              <div class="stat-box">
+                <strong>92%</strong>
+                <span>Placement rate</span>
+              </div>
+            </div>
+
+            <div class="opportunities" aria-label="Featured internship opportunities">
+              <article class="job-item">
+                <div class="company-badge company-one" aria-hidden="true">A</div>
+                <div class="job-copy">
+                  <h4>Analytics Intern</h4>
+                  <p>Accenture • Bengaluru</p>
+                </div>
+              </article>
+
+              <article class="job-item">
+                <div class="company-badge company-two" aria-hidden="true">T</div>
+                <div class="job-copy">
+                  <h4>Software Engineer</h4>
+                  <p>TechNova • Hyderabad</p>
+                </div>
+              </article>
+
+              <article class="job-item">
+                <div class="company-badge company-three" aria-hidden="true">G</div>
+                <div class="job-copy">
+                  <h4>Business Analyst</h4>
+                  <p>GlobalEdge • Pune</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="floating-badge">Career support dashboard</div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>
