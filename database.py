@@ -1,7 +1,8 @@
+import os
 import sqlite3
 from datetime import datetime
 
-DB_NAME = "placement.db"
+DB_NAME = os.getenv("DATABASE_PATH", "placement.db")
 
 
 def _connect_db():

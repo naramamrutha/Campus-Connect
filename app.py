@@ -21,6 +21,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "student-placement-system-secret")
+UPLOAD_DIR = os.getenv("UPLOAD_DIR", os.path.join(app.root_path, "uploads", "resumes"))
 
 init_db()
 
@@ -1074,7 +1075,7 @@ def serve_resume(filename):
         return redirect(url_for('login'))
 
     student_id = session["student_id"]
-    upload_root = os.path.join(app.root_path, 'uploads', 'resumes')
+    upload_root = UPLOAD_DIR
     safe_dir = os.path.abspath(upload_root)
     candidate = os.path.abspath(os.path.join(upload_root, filename))
 
@@ -1424,7 +1425,7 @@ def apply_to_placement():
             }
         ))
 
-    upload_dir = os.path.join(app.root_path, 'uploads', 'resumes')
+    upload_dir = UPLOAD_DIR
     os.makedirs(upload_dir, exist_ok=True)
     unique_name = f"student_{student_id}_placement_{placement_id}_{uuid.uuid4().hex}_{secure_filename(filename)}"
     resume_path = os.path.join(upload_dir, unique_name)
