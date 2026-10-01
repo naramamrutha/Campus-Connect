@@ -6,7 +6,7 @@ import uuid
 import certifi
 from dotenv import load_dotenv
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 from urllib import error, request as urllib_request
 from urllib.parse import urlencode, urlparse
 
@@ -158,15 +158,20 @@ def should_refresh_live_jobs():
             "SELECT value FROM job_sync_state WHERE key = 'adzuna_last_sync'"
         ).fetchone()
 
-    if not row:
+    if not row or not row[0]:
         return True
 
     try:
         last_sync = datetime.fromisoformat(row[0])
-    except ValueError:
+    except (TypeError, ValueError):
         return True
 
-    now = datetime.utcnow()
+    if last_sync.tzinfo is None:
+        last_sync = last_sync.replace(tzinfo=timezone.utc)
+    else:
+        last_sync = last_sync.astimezone(timezone.utc)
+
+    now = datetime.now(timezone.utc)
     return (now - last_sync).total_seconds() >= LIVE_JOBS_CACHE_SECONDS
 
 
@@ -1442,7 +1447,7 @@ def apply_to_placement():
                 application_url, college, gender
             ) VALUES (?, ?, ?, 'Applied', ?, ?, ?, ?)
             """,
-            (student_id, placement_id, datetime.utcnow().date().isoformat(), relative_resume_path, application_url, college, gender or None)
+            (student_id, placement_id, datetime.now(timezone.utc).date().isoformat(), relative_resume_path, application_url, college, gender or None)
         )
         connection.commit()
 

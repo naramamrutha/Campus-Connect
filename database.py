@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 
 DB_NAME = os.getenv("DATABASE_PATH", "placement.db")
 
@@ -406,7 +406,7 @@ def sync_live_jobs(jobs):
                 )
             )
 
-        sync_time = datetime.utcnow().isoformat(timespec="seconds")
+        sync_time = datetime.now(timezone.utc).isoformat(timespec="seconds")
         conn.execute(
             "INSERT INTO job_sync_state (key, value, updated_at) VALUES (?, ?, ?) "
             "ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at",

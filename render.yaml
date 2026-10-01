@@ -7,15 +7,7 @@ services:
     envVars:
       - key: FLASK_SECRET_KEY
         generateValue: true
-      - key: DATABASE_PATH
-        value: /var/data/placement.db
-      - key: UPLOAD_DIR
-        value: /var/data/resumes
       - key: ADZUNA_APP_ID
         sync: false
       - key: ADZUNA_API_KEY
         sync: false
-    disk:
-      name: campus-connect-data
-      mountPath: /var/data
-      sizeGB: 1
